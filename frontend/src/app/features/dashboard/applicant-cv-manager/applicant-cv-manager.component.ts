@@ -24,6 +24,16 @@ export class ApplicantCvManagerComponent implements OnInit {
   searchTerm = '';
   showLastTenOnly = false;
 
+  sortColumn: 'name' | 'createdAt' = 'createdAt';
+  sortDirection: 'asc' | 'desc' = 'desc';
+
+  pageSize = 25;
+  currentPage = 1;
+
+  onSearchOrFilterChange(): void {
+    this.currentPage = 1;
+  }
+
   ngOnInit(): void {
     this.load();
   }
@@ -37,12 +47,18 @@ export class ApplicantCvManagerComponent implements OnInit {
     });
   }
 
-  get filteredApplicants(): ApplicantWithCvStatus[] {
-    let result = [...this.applicants].sort((a, b) =>
-      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    );
+  toggleSort(column: 'name' | 'createdAt'): void {
+    if (this.sortColumn === column) {
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortColumn = column;
+      this.sortDirection = column === 'createdAt' ? 'desc' : 'asc';
+    }
+    this.currentPage = 1;
+  }
 
-    if (this.showLastTenOnly) result = result.slice(0, 10);
+  get filteredApplicants(): ApplicantWithCvStatus[] {
+    let result = [...this.applicants];
 
     const term = this.searchTerm.trim().toLowerCase();
     if (term) {
@@ -52,7 +68,39 @@ export class ApplicantCvManagerComponent implements OnInit {
       );
     }
 
+    if (this.sortColumn === 'name') {
+      result.sort((a, b) => {
+        const cmp = `${a.firstName} ${a.lastName}`.localeCompare(`${b.firstName} ${b.lastName}`);
+        return this.sortDirection === 'asc' ? cmp : -cmp;
+      });
+    } else {
+      result.sort((a, b) => {
+        const da = new Date(a.createdAt).getTime();
+        const db = new Date(b.createdAt).getTime();
+        return this.sortDirection === 'asc' ? da - db : db - da;
+      });
+    }
+
+    if (this.showLastTenOnly) result = result.slice(0, 10);
+
     return result;
+  }
+
+  get totalPages(): number {
+    return Math.max(1, Math.ceil(this.filteredApplicants.length / this.pageSize));
+  }
+
+  get paginatedApplicants(): ApplicantWithCvStatus[] {
+    const start = (this.currentPage - 1) * this.pageSize;
+    return this.filteredApplicants.slice(start, start + this.pageSize);
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) this.currentPage++;
+  }
+
+  prevPage(): void {
+    if (this.currentPage > 1) this.currentPage--;
   }
 
   processCv(applicantId: number): void {
