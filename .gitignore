@@ -1,0 +1,6 @@
+ETL/.env
+ETL/etl_env/
+ETL/sample_data/
+ETL/
+ai_engine/venv/
+ai_engine/.env
