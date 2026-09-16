@@ -100,9 +100,10 @@ public class HrController {
         return ResponseEntity.ok(hrService.getAllApplicantCvs());
     }
 
-    // =========================
-    // APPLICATION STATUS ACTIONS
-    // =========================
+        @GetMapping("/employees/{id}")
+        public ResponseEntity<EmployeeDTO> getEmployeeById(@PathVariable Long id) {
+            return ResponseEntity.ok(hrService.getEmployeeById(id));
+}
 
     @PatchMapping("/job-applications/{id}/interview")
     public ResponseEntity<JobApplicationDTO> moveToInterview(@PathVariable UUID id) {

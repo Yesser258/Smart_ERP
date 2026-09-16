@@ -13,5 +13,9 @@ export const DASHBOARD_ROUTES: Routes = [
     path: 'apply',
     loadComponent: () => import('./job-application-form/job-application-form.component').then(m => m.JobApplicationFormComponent)
   },
+  {
+    path: 'employee/:id',
+    loadComponent: () => import('./employee-detail/employee-detail.component').then(m => m.EmployeeDetailComponent)
+  },
 
 ];
