@@ -12,6 +12,7 @@ import {
   EngagementSurveyDTO,
   JobApplicationDTO,
   JobPostingDTO,
+  PageResponse,
   SalaryHistoryDTO,
   TrainingCourseDTO
 } from '../models/hr.model';
@@ -71,6 +72,11 @@ export class HrService {
   getAllApplicantCvs(): Observable<ApplicantCvDTO[]> {
     return this.http.get<ApplicantCvDTO[]>(`${this.apiUrl}/applicant-cvs`);
   }
+  getEmployeesPaged(page: number, size: number, search: string, sortBy: string, sortDir: string): Observable<PageResponse<EmployeeDTO>> {
+  return this.http.get<PageResponse<EmployeeDTO>>(`${this.apiUrl}/employees/paged`, {
+    params: { page, size, search: search || '', sortBy, sortDir }
+  });
+}
 
   // Add to your existing HrService class
 

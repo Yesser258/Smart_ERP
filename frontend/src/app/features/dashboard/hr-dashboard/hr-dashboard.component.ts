@@ -30,6 +30,7 @@ import { HrRecruitmentComponent } from '../hr-recruitment/hr-recruitment.compone
 import { HrRetentionComponent } from '../hr-retention/hr-retention.component';
 import { HrBudgetAdvisorComponent } from '../hr-budget-advisor/hr-budget-advisor.component';
 import { EmployeeListComponent } from '../employee-list/employee-list.component';
+import { DepartmentListComponent } from '../department-list/department-list.component';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries | ApexNonAxisChartSeries;
@@ -67,7 +68,8 @@ const DARK_THEME_BASE: Partial<ApexChart> = {
     HrRecruitmentComponent,
     HrBudgetAdvisorComponent,
     HrRetentionComponent,
-    EmployeeListComponent
+    EmployeeListComponent,
+    DepartmentListComponent
   ],
   templateUrl: './hr-dashboard.component.html'
 })

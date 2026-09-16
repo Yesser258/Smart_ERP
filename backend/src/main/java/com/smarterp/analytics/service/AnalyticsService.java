@@ -2,6 +2,7 @@ package com.smarterp.analytics.service;
 
 import com.smarterp.analytics.dto.AttritionRiskIndicatorsDTO;
 import com.smarterp.analytics.dto.DepartmentSalarySummaryDTO;
+import com.smarterp.analytics.dto.DepartmentSummaryDTO;
 import com.smarterp.analytics.dto.DepartmentTurnoverDTO;
 import com.smarterp.analytics.dto.DepartmentTypeTurnoverDTO;
 import com.smarterp.analytics.dto.EmployeePerformanceEngagementDTO;
@@ -12,6 +13,7 @@ import com.smarterp.analytics.dto.TimeToHireDTO;
 import com.smarterp.analytics.dto.TopPerformerBenchmarksDTO;
 import com.smarterp.analytics.dto.TrainingAnalyticsDTO;
 import com.smarterp.analytics.repository.AttritionRiskIndicatorsRepository;
+import com.smarterp.analytics.repository.DepartmentSummaryRepository;
 import com.smarterp.analytics.repository.DepartmentTurnoverRepository;
 import com.smarterp.analytics.repository.DepartmentTypeTurnoverRepository;
 import com.smarterp.analytics.repository.EmployeePerformanceEngagementRepository;
@@ -200,5 +202,12 @@ public class AnalyticsService {
     // NEW
     public List<TimeToHireDTO> getTimeToHireStats() {
         return timeToHireRepository.findAvgTimeToHirePerJob();
+    }
+    // add to constructor-injected fields:
+    private final DepartmentSummaryRepository departmentSummaryRepository;
+
+    // add method:
+    public List<DepartmentSummaryDTO> getDepartmentSummary() {
+        return departmentSummaryRepository.findAll();
     }
 }

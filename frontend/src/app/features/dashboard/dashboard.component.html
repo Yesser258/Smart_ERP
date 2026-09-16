@@ -37,6 +37,11 @@
                 class="w-full text-left px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors font-medium">
           Employés
         </button>
+        <button (click)="activeMenu = 'departments'" 
+                [class.bg-teal-600]="activeMenu === 'departments'" 
+                class="w-full text-left px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors font-medium">
+          Départements
+        </button>
           <button 
     (click)="activeMenu = 'budget'" 
     [ngClass]="activeMenu === 'budget' ? 'bg-teal-600 text-white' : 'text-slate-200 hover:bg-slate-800'"

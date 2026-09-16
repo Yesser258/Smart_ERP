@@ -1,0 +1,52 @@
+<div class="max-w-3xl mx-auto p-6">
+  <button (click)="goBack()" class="text-sm text-slate-400 hover:text-white mb-4 flex items-center gap-1">
+    ← Retour
+  </button>
+
+  <div *ngIf="loading" class="text-slate-400">Chargement...</div>
+  <div *ngIf="error" class="text-rose-400">Département introuvable.</div>
+
+  <div *ngIf="department as d" class="space-y-4">
+    <div class="bg-slate-800 p-6 rounded-xl border border-slate-700">
+      <div class="flex items-center justify-between mb-1">
+        <h2 class="text-xl font-semibold text-white">{{ d.businessUnit }}</h2>
+        <span class="px-2 py-1 rounded text-xs border" [ngClass]="turnoverClass(d.turnoverRatePct)">
+          {{ d.turnoverRatePct | number:'1.1-1' }}% turnover
+        </span>
+      </div>
+      <p class="text-sm text-slate-400 mb-4">{{ d.departmentType }} · ID #{{ d.departmentId }}</p>
+      <p *ngIf="d.divisionDescription" class="text-sm text-slate-300">{{ d.divisionDescription }}</p>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
+        <p class="text-xs text-slate-400">Effectif Actif</p>
+        <p class="text-2xl font-bold text-white mt-1">{{ d.headcount }}</p>
+      </div>
+      <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
+        <p class="text-xs text-slate-400">Salaire Moyen</p>
+        <p class="text-2xl font-bold text-white mt-1">{{ d.avgSalary !== null ? ('$' + (d.avgSalary | number:'1.0-0')) : '—' }}</p>
+      </div>
+      <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
+        <p class="text-xs text-slate-400">Actifs / Partis</p>
+        <p class="text-2xl font-bold text-white mt-1">{{ d.activeCount }} / {{ d.terminatedCount }}</p>
+      </div>
+      <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
+        <p class="text-xs text-slate-400">Postes Ouverts</p>
+        <p class="text-2xl font-bold text-sky-400 mt-1">{{ openJobPostings }}</p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+      <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
+        <p class="text-xs text-slate-400">Candidatures Reçues</p>
+        <p class="text-2xl font-bold text-white mt-1">{{ totalApplications }}</p>
+      </div>
+      <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
+        <p class="text-xs text-slate-400">Investissement Formation</p>
+        <p class="text-2xl font-bold text-teal-400 mt-1">${{ trainingInvestment | number:'1.0-0' }}</p>
+        <p class="text-xs text-slate-500 mt-1">{{ trainedEmployeesCount }} employés formés</p>
+      </div>
+    </div>
+  </div>
+</div>

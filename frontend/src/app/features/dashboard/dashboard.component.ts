@@ -8,6 +8,7 @@ import { EmployeeDashboardComponent } from './employee-dashboard/employee-dashbo
 import { AiAssistantComponent } from '../ai-assistant/ai-assistant.component';
 import { HrBudgetAdvisorComponent } from './hr-budget-advisor/hr-budget-advisor.component';
 import { HrRetentionComponent } from './hr-retention/hr-retention.component';
+import { DepartmentListComponent } from './department-list/department-list.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,8 +20,9 @@ import { HrRetentionComponent } from './hr-retention/hr-retention.component';
     AdminDashboardComponent,
     EmployeeDashboardComponent,
     AiAssistantComponent,
-    HrBudgetAdvisorComponent, // <--- Added
-    HrRetentionComponent
+    HrBudgetAdvisorComponent,
+    HrRetentionComponent,
+    DepartmentListComponent
   ],
   templateUrl: './dashboard.component.html'
 })

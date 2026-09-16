@@ -2,6 +2,7 @@ package com.smarterp.analytics.web;
 
 import com.smarterp.analytics.dto.AttritionRiskIndicatorsDTO;
 import com.smarterp.analytics.dto.DepartmentSalarySummaryDTO;
+import com.smarterp.analytics.dto.DepartmentSummaryDTO;
 import com.smarterp.analytics.dto.DepartmentTurnoverDTO;
 import com.smarterp.analytics.dto.DepartmentTypeTurnoverDTO;
 import com.smarterp.analytics.dto.EmployeePerformanceEngagementDTO;
@@ -79,5 +80,9 @@ public ResponseEntity<List<GenderPayGapDTO>> getGenderPayGapStats() {
 @GetMapping("/time-to-hire")
 public ResponseEntity<List<TimeToHireDTO>> getTimeToHireStats() {
     return ResponseEntity.ok(analyticsService.getTimeToHireStats());
+}
+@GetMapping("/department-summary")
+public ResponseEntity<List<DepartmentSummaryDTO>> getDepartmentSummary() {
+    return ResponseEntity.ok(analyticsService.getDepartmentSummary());
 }
 }

@@ -4,6 +4,7 @@ package com.smarterp.hr.service;
 import com.smarterp.hr.domain.Applicant;
 import com.smarterp.hr.domain.ApplicantCv;
 import com.smarterp.hr.domain.Department;
+import com.smarterp.hr.domain.Employee;
 import com.smarterp.hr.domain.JobApplication;
 import com.smarterp.hr.domain.JobPosting;
 import com.smarterp.hr.dto.*;
@@ -11,11 +12,16 @@ import com.smarterp.hr.repository.*;
 import com.smarterp.shared.email.EmailService;
 import com.smarterp.shared.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import com.smarterp.shared.storage.MinioService;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -180,14 +186,25 @@ public List<JobApplicationDTO> getAllJobApplications() {
         return ApplicantDTO.fromEntity(applicant);
     }
 
-    /**
-     * Converts an applicant into a real employee + login account.
-     * Uses JdbcTemplate for the employee/user inserts (not JPA entities)
-     * since employees.employee_id is a plain BIGINT seeded by the ETL --
-     * see the schema.sql sequence addition this relies on. Reuses the
-     * applicant's own name/gender/dob rather than asking HR to retype
-     * data already on file.
-     */
+public Page<EmployeeDTO> getEmployeesPaged(int page, int size, String search, String sortBy, String sortDir) {
+    Sort sort = Sort.by(sortDir.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC,
+                         mapSortColumn(sortBy));
+    Pageable pageable = PageRequest.of(page, size, sort);
+
+    return employeeRepository.findPageWithSearch(search, pageable)
+            .map(EmployeeDTO::fromEntity);
+}
+
+private String mapSortColumn(String sortBy) {
+    return switch (sortBy) {
+        case "name" -> "lastName";
+        case "title" -> "title";
+        case "employeeStatus" -> "employeeStatus";
+        case "salary" -> "salary";
+        case "startDate" -> "startDate";
+        default -> "lastName";
+    };
+}
     @Transactional
     public HireResultDTO hireApplicant(Long applicantId, HireRequestDTO req) {
         Applicant applicant = applicantRepository.findById(applicantId)

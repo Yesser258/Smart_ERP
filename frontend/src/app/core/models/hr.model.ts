@@ -33,6 +33,13 @@ export interface DepartmentDTO {
   departmentType: string;
   divisionDescription: string;
 }
+export interface PageResponse<T> {
+  content: T[];
+  totalElements: number;
+  totalPages: number;
+  number: number; // current page index (0-based)
+  size: number;
+}
 
 export interface EmployeeDTO {
   employeeId: number;

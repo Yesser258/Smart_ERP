@@ -326,3 +326,26 @@ FROM job_postings jp
 JOIN job_applications ja ON ja.job_id = jp.job_id
 WHERE UPPER(ja.status) = 'OFFERED'
 GROUP BY jp.job_id, jp.title, jp.department_id;
+
+CREATE OR REPLACE VIEW v_department_summary AS
+SELECT 
+    d.department_id,
+    d.business_unit,
+    d.department_type,
+    d.division_description,
+    COUNT(DISTINCT e.employee_id) FILTER (
+        WHERE UPPER(e.employee_status) IN ('ACTIVE', 'ON LEAVE')
+    ) AS headcount,
+    ROUND(
+        AVG(e.salary) FILTER (WHERE UPPER(e.employee_status) IN ('ACTIVE', 'ON LEAVE')),
+        2
+    ) AS avg_salary,
+    COALESCE(dt.turnover_rate_pct, 0.00) AS turnover_rate_pct,
+    COALESCE(dt.active_count, 0) AS active_count,
+    COALESCE(dt.terminated_count, 0) AS terminated_count
+FROM departments d
+LEFT JOIN employees e ON e.department_id = d.department_id AND e.is_deleted = FALSE
+LEFT JOIN v_department_turnover dt ON dt.department_id = d.department_id
+WHERE d.is_deleted = FALSE
+GROUP BY d.department_id, d.business_unit, d.department_type, d.division_description,
+         dt.turnover_rate_pct, dt.active_count, dt.terminated_count;

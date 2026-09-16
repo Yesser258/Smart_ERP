@@ -17,5 +17,13 @@ export const DASHBOARD_ROUTES: Routes = [
     path: 'employee/:id',
     loadComponent: () => import('./employee-detail/employee-detail.component').then(m => m.EmployeeDetailComponent)
   },
+  {
+    path: 'departments/:id',
+    loadComponent: () => import('./department-detail/department-detail.component').then(m => m.DepartmentDetailComponent)
+  },
+  {
+  path: 'department-type/:type',
+  loadComponent: () => import('./department-type-detail/department-type-detail.component').then(m => m.DepartmentTypeDetailComponent)
+},
 
 ];

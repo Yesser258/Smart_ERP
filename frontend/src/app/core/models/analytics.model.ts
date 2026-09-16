@@ -7,6 +7,17 @@ export interface KpiSummaryDTO {
   companyTurnoverRate: number;
   highRiskCount: number;
 }
+export interface DepartmentSummaryDTO {
+  departmentId: number;
+  businessUnit: string;
+  departmentType: string;
+  divisionDescription: string;
+  headcount: number;
+  avgSalary: number | null;
+  turnoverRatePct: number;
+  activeCount: number;
+  terminatedCount: number;
+}
 
 export interface DepartmentSalarySummaryDTO {
   businessUnit: string;

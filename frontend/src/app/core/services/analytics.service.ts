@@ -14,7 +14,8 @@ import {
   TopPerformerBenchmarksDTO, 
   TrainingAnalyticsDTO ,
   GenderPayGapDTO,
-  TimeToHireDTO
+  TimeToHireDTO,
+  DepartmentSummaryDTO
 } from '../models/analytics.model';
 
 @Injectable({
@@ -69,6 +70,9 @@ export class AnalyticsService {
 
 getTimeToHire(): Observable<TimeToHireDTO[]> {
   return this.http.get<TimeToHireDTO[]>(`${this.apiUrl}/time-to-hire`);
+}
+getDepartmentSummary(): Observable<DepartmentSummaryDTO[]> {
+  return this.http.get<DepartmentSummaryDTO[]>(`${this.apiUrl}/department-summary`);
 }
 }
 

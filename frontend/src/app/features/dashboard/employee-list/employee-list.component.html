@@ -7,6 +7,11 @@
     <button (click)="load()" class="text-xs text-slate-400 hover:text-white underline">Rafraîchir</button>
   </div>
 
+  <div class="flex gap-3 mb-4">
+    <input [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange()" placeholder="Rechercher par nom..."
+           class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-teal-400" />
+  </div>
+
   <div *ngIf="loading" class="flex justify-center items-center h-32">
     <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-teal-400"></div>
   </div>
@@ -15,12 +20,7 @@
     Impossible de charger les employés.
   </div>
 
-  <div *ngIf="!loading && !error">
-    <div class="flex gap-3 mb-4">
-      <input [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange()" placeholder="Rechercher par nom..."
-             class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-teal-400" />
-    </div>
-
+  <div *ngIf="!loading && !error" [class.opacity-50]="searching" class="transition-opacity">
     <div class="overflow-x-auto">
       <table class="w-full text-left text-slate-300 text-sm">
         <thead class="text-xs text-slate-400 uppercase bg-slate-900/50">
@@ -52,7 +52,7 @@
           </tr>
         </thead>
         <tbody class="divide-y divide-slate-700">
-          <tr *ngFor="let e of paginatedEmployees"
+          <tr *ngFor="let e of employees"
               (click)="goToDetail(e.employeeId)"
               class="hover:bg-slate-750 cursor-pointer transition-colors">
             <td class="p-3 font-medium text-white">{{ e.firstName }} {{ e.lastName }}</td>
@@ -66,21 +66,21 @@
             <td class="p-3 text-right text-slate-300">${{ e.salary | number:'1.0-0' }}</td>
             <td class="p-3 text-slate-400">{{ e.startDate | date:'dd/MM/yyyy' }}</td>
           </tr>
-          <tr *ngIf="filteredEmployees.length === 0">
+          <tr *ngIf="employees.length === 0">
             <td colspan="6" class="p-3 text-center text-slate-500">Aucun employé trouvé.</td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <div *ngIf="filteredEmployees.length > pageSize" class="flex items-center justify-between mt-4 text-xs text-slate-400">
-      <span>{{ filteredEmployees.length }} employés · Page {{ currentPage }}/{{ totalPages }}</span>
+    <div *ngIf="totalElements > pageSize" class="flex items-center justify-between mt-4 text-xs text-slate-400">
+      <span>{{ totalElements }} employés · Page {{ currentPage + 1 }}/{{ totalPages }}</span>
       <div class="flex gap-2">
-        <button (click)="prevPage()" [disabled]="currentPage === 1"
+        <button (click)="prevPage()" [disabled]="currentPage === 0"
                 class="px-3 py-1.5 bg-slate-900 border border-slate-700 rounded-lg hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
           Précédent
         </button>
-        <button (click)="nextPage()" [disabled]="currentPage === totalPages"
+        <button (click)="nextPage()" [disabled]="currentPage >= totalPages - 1"
                 class="px-3 py-1.5 bg-slate-900 border border-slate-700 rounded-lg hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
           Suivant
         </button>
